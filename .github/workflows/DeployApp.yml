@@ -1,0 +1,76 @@
+on:
+  push:
+    paths:
+      - "application/**"
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  ECR_BACKEND_IMAGE: ${{ vars.ECR_BACKEND_IMAGE }}
+  AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+  ECS_CLUSTER: ${{ vars.ECS_CLUSTER }}
+  ECS_BACKEND_SERVICE: ${{ vars.ECS_BACKEND_SERVICE }}
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+
+      - name: Build and push Docker image
+        run: |
+          cd application
+          docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_BACKEND_IMAGE:latest .
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_BACKEND_IMAGE:latest
+      
+      - name: Print environment variables
+        run: |
+          echo "ECS_CLUSTER=$ECS_CLUSTER"
+          echo "ECS_BACKEND_SERVICE=$ECS_BACKEND_SERVICE"
+          echo "AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
+
+      - name: Deploy to ECS
+        run: |
+          aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_BACKEND_SERVICE --force-new-deployment --region $AWS_DEFAULT_REGION
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Notify Slack on Success
+        if: success()
+        run: |
+          COMMIT_MESSAGE=$(echo "${{ github.event.head_commit.message }}" | jq -Rs .)
+          TEXT="✅ *Deployment succeeded!*• *Service:* $ECS_BACKEND_SERVICE• *Cluster:* $ECS_CLUSTER• *User:* ${{ github.actor }}• *Commit:* $(echo $COMMIT_MESSAGE | jq -r .)"
+          PAYLOAD=$(jq -n --arg text "$TEXT" '{text: $text}')
+          curl -X POST -H 'Content-type: application/json' \
+               --data "$PAYLOAD" \
+               ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on Failure
+        if: failure()
+        run: |
+          COMMIT_MESSAGE=$(echo "${{ github.event.head_commit.message }}" | jq -Rs .)
+          TEXT="❌ *Deployment failed!*• *Service:* $ECS_BACKEND_SERVICE• *Cluster:* $ECS_CLUSTER• *User:* ${{ github.actor }}• *Commit:* $(echo $COMMIT_MESSAGE | jq -r .)"
+          PAYLOAD=$(jq -n --arg text "$TEXT" '{text: $text}')
+          curl -X POST -H 'Content-type: application/json' \
+               --data "$PAYLOAD" \
+               ${{ secrets.SLACK_WEBHOOK_URL }}

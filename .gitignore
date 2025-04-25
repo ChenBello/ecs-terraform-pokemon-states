@@ -1,0 +1,53 @@
+# Ignore Terraform files in infrastructure directory
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Ignore Terraform override files
+override.tf
+override.tf.json
+*.tfvars
+
+# Ignore application-related files (Flask app)
+application/__pycache__/
+application/instance/
+application.env
+*.pyc
+
+# Ignore IDE files
+.idea/
+.vscode/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore Terraform state and plan files (general)
+*.tfstate
+*.tfstate.*
+*.tfplan
+
+# Crash logs
+crash.log
+
+# Ignore local .terraform directory
+.terraform/
+
+# Ignore override files (local customization)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore CLI config
+.terraformrc
+terraform.rc
+
+# Ignore sensitive/private keys
+*.pem
+*.key
+*.env
+
+# Ignore Docker files (if you have them)
+.dockerignore
+

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Pokémon</title>
+    <style>
+        /* Style for the body of the page */
+        body {
+            margin: 0;
+            height: 100vh; /* Set height to full viewport height */
+            display: flex; /* Use flexbox for centering */
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+            font-family: Arial, sans-serif; /* Set font */
+            background-color: #f0f0f0; /* Light background color */
+        }
+
+        /* Style for the content box */
+        .content {
+            text-align: center; /* Center the text within the box */
+            background-color: #fff; /* White background for the content box */
+            padding: 20px; /* Padding around the content */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+
+        /* Style for images */
+        img {
+            max-width: 100%; /* Ensure image does not exceed container width */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 10px; /* Rounded corners for images */
+        }
+
+        /* Style for the button */
+        button {
+            padding: 10px 20px; /* Padding for the button */
+            background-color: #4CAF50; /* Green background color */
+            color: white; /* White text color */
+            border: none; /* Remove border */
+            border-radius: 5px; /* Rounded corners for button */
+            cursor: pointer; /* Change cursor to pointer on hover */
+            font-size: 16px; /* Set font size */
+        }
+
+        /* Button hover effect */
+        button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Random Pokémon</h1>
+        <div id="pokemon-info">
+            <h2>Name: {{ pokemon['name'] }}</h2>
+            <h3>ID: {{ pokemon['id'] }}</h3>
+            <h3>Abilities: {{ pokemon['abilities'] | join(', ') }}</h3>
+            <img src="{{ pokemon['image_url'] }}" alt="{{ pokemon['name'] }}" />
+        </div>
+        <button id="get-pokemon">Get Random Pokémon</button>
+    </div>
+
+    <script>
+        document.getElementById('get-pokemon').addEventListener('click', function() {
+            fetch('/random_pokemon')
+            .then(response => response.json())
+            .then(pokemon => {
+                const pokemonInfo = `
+                    <h2>Name: ${pokemon.name}</h2>
+                    <h3>ID: ${pokemon.id}</h3>
+                    <h3>Abilities: ${pokemon.abilities.join(', ')}</h3>
+                    <img src="${pokemon.image_url}" alt="${pokemon.name}" />
+                `;
+                document.getElementById('pokemon-info').innerHTML = pokemonInfo;
+            })
+            .catch(error => console.error('Error fetching the Pokémon:', error));
+        });
+    </script>
+</body>
+<!--<body>-->
+<!--    <div class="content">-->
+<!--        <h1>Random Pokémon</h1>-->
+<!--        {% if pokemon %} &lt;!&ndash; Check if a Pokémon exists &ndash;&gt;-->
+<!--            <h2>Name: {{ pokemon['name'] }}</h2> &lt;!&ndash; Display Pokémon name &ndash;&gt;-->
+<!--            <h3>ID: {{ pokemon['id'] }}</h3> &lt;!&ndash; Display Pokémon ID &ndash;&gt;-->
+<!--            <h3>Abilities: {{ pokemon['abilities'] | join(', ') }}</h3> &lt;!&ndash; Display Pokémon abilities &ndash;&gt;-->
+<!--            <img src="{{ pokemon['image_url'] }}" alt="{{ pokemon['name'] }}" /> &lt;!&ndash; Display Pokémon image &ndash;&gt;-->
+<!--        {% else %} &lt;!&ndash; If no Pokémon is found &ndash;&gt;-->
+<!--            <p>No Pokémon found!</p> &lt;!&ndash; Display message &ndash;&gt;-->
+<!--        {% endif %}-->
+<!--        <form method="get" action="/"> &lt;!&ndash; Form to get a new random Pokémon &ndash;&gt;-->
+<!--            <button type="submit">Get Random Pokémon</button> &lt;!&ndash; Submit button &ndash;&gt;-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</body>-->
+</html>
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Random Pokémon</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Random Pokémon</h1>-->
+<!--    {% if pokemon %}-->
+<!--        <h2>Name: {{ pokemon['name'] }}</h2>-->
+<!--        <h3>ID: {{ pokemon['id'] }}</h3>-->
+<!--        <h3>Abilities: {{ pokemon['abilities'] | join(', ') }}</h3>-->
+<!--        <img src="{{ pokemon['image_url'] }}" alt="{{ pokemon['name'] }}" />-->
+<!--    {% else %}-->
+<!--        <p>No Pokémon found!</p>-->
+<!--    {% endif %}-->
+<!--    <form method="get" action="/">-->
+<!--        <button type="submit">Get Random Pokémon</button>-->
+<!--    </form>-->
+<!--</body>-->
+<!--</html>-->
