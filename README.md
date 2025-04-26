@@ -17,7 +17,12 @@ This project demonstrates a scalable Flask web application that displays random 
 - CI/CD pipeline with GitHub Actions
 
 ---
+## 📸 Screenshot of the S3 Bucket Structure
 
+Here’s a screenshot of the S3 bucket used in the project, showcasing the structure of the state files. The design is based on best practices for organizing state files, ensuring better management and versioning. This structure helps maintain consistency and prevents potential conflicts during deployment. 
+![S3 Bucket Structure](https://github.com/ChenBello/ecs-terraform-pokemon-states/blob/650c31d85d6f80b38c28b6af957ee32695e67fdd/IMG_2020.png)
+
+---
 ## Architecture Overview
 
 | Component                    | Purpose                               |
