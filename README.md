@@ -86,6 +86,14 @@ The application will be accessible via the ALB DNS name output by Terraform. (EC
 
 ---
 
+## 📸 Screenshot of the Architecture
+
+Here’s a diagram of the project’s architecture, showcasing the key components and how they interact. While the diagram illustrates the use of **AWS CodePipeline**, **AWS CodeDeploy** and **AWS CodeBuild** for CI/CD, in this project, **GitHub Actions** is used to manage the continuous integration and deployment process.
+
+![Architecture Diagram](https://github.com/ChenBello/ecs-terraform-pokemon-states/blob/aea20ae93de8aa5a00cf5924aa8745f5bf0f67ff/_Pokemon-app-terraform_.drawio.png)
+
+---
+
 ## CI/CD with GitHub Actions
 
 A GitHub Actions workflow is included for continuous deployment.
