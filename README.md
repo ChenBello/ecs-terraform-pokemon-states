@@ -176,7 +176,6 @@ This project follows an opinionated **modular structure** with separate Terrafor
 - The **network** and **ecs-fargate** stages use remote backends (S3 + DynamoDB) created during bootstrap.
 
 Each environment can load outputs from the previous stage using `terraform_remote_state`, ensuring a loosely coupled and composable infrastructure design.
-Each environment loads outputs from the previous stage using `terraform_remote_state`, ensuring a loosely coupled and composable infrastructure design. 
 
 ### Dependency Flow:
 ```text
