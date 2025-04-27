@@ -8,7 +8,6 @@ resource "aws_s3_bucket" "tf_state" {
   lifecycle {
     prevent_destroy = true
   }
-  acl = "private"  # Make sure the bucket is private
 }
 
 resource "aws_s3_bucket_versioning" "tf_state_versioning" {
