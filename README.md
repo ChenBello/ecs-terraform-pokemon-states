@@ -46,23 +46,25 @@ This project demonstrates a scalable Flask web application that displays random 
 ```bash
 git clone https://github.com/ChenBello/ecs-terraform-pokemon-states.git
 cd ecs-terraform-pokemon-states
+```
 
 ### 2. Configure Terraform Variables
 
 Copy the example terraform.tfvars files for each stage (in this case, this is only needed for the 'network' stage):
-
+```bash
 cp infrastructure/bootstrap/terraform.tfvars.example infrastructure/bootstrap/terraform.tfvars
 cp infrastructure/network/terraform.tfvars.example infrastructure/network/terraform.tfvars
 cp infrastructure/ecs-fargate/terraform.tfvars.example infrastructure/ecs-fargate/terraform.tfvars
-
+```
 Update each terraform.tfvars file with your AWS, VPC, and application-specific settings.
 
 ### 3. (Optional) Build Docker Image Locally
 
 If you want to build the Docker image locally, run the following commands:
-‏```bash
+```bash
 cd application
 docker build -t pokemon-flask-app .
+```
 
 ### 4. Push the Image to ECR or Docker Hub
 
@@ -75,27 +77,27 @@ The deployment is split into three stages. You need to apply the configurations 
 ## Stage 1: Bootstrap
 
 This stage sets up the Terraform backend (S3 bucket and DynamoDB table for locking). Run the following commands:
-‏```bash
+```bash
 cd infrastructure/bootstrap
 terraform init
 terraform apply
-
+```
 ## Stage 2: Network
 
 The second stage provisions the base networking layer (VPC, subnets, NAT, etc.). Run the following commands:
-‏```bash
+```bash
 cd infrastructure/network
 terraform init
 terraform apply
-
+```
 ## Stage 3: ECS-Fargate
 
 Finally, deploy the application on ECS Fargate. Run the following commands:
-‏```bash
+```bash
 cd infrastructure/ecs-fargate
 terraform init
 terraform apply
-
+```
 ### 6. Access the Application
 
 The application will be accessible via the ALB DNS name output by Terraform. ECS Auto Scaling will automatically adjust the task count based on CPU usage and ALB request count.
