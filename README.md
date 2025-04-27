@@ -17,13 +17,14 @@ This project demonstrates a scalable Flask web application that displays random 
 - CI/CD pipeline with GitHub Actions
 
 ---
+
 ## Architecture Overview
 
 | Component                    | Purpose                               |
 |------------------------------|---------------------------------------|
 | Amazon ECS Fargate           | Hosts the containerized application   |
 | Application Load Balancer    | Routes traffic to the ECS service     |
-| Auto Scaling | Adjusts the number of running tasks based on CPU usage and incoming request count |
+| Auto Scaling                 | Adjusts the number of running tasks based on CPU usage and incoming request count |
 | Amazon ECR                   | Stores Docker images                  |
 | GitHub Actions               | Handles CI/CD automation              |
 
@@ -43,40 +44,63 @@ This project demonstrates a scalable Flask web application that displays random 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/ChenBello/ecs-terraform-pokemon.git
-cd ecs-terraform-pokemon
-```
+git clone https://github.com/ChenBello/ecs-terraform-pokemon-states.git
+cd ecs-terraform-pokemon-states
 
-### 2. Configure Terraform Variables
+2. Configure Terraform Variables
 
-```bash
-cp terraform.tfvars.example terraform.tfvars
-```
+Copy the example terraform.tfvars files for each stage:
 
-Update `terraform.tfvars` with your AWS, VPC, and application-specific settings.
+cp infrastructure/bootstrap/terraform.tfvars.example infrastructure/bootstrap/terraform.tfvars
+cp infrastructure/network/terraform.tfvars.example infrastructure/network/terraform.tfvars
+cp infrastructure/ecs-fargate/terraform.tfvars.example infrastructure/ecs-fargate/terraform.tfvars
 
-### 3. (Optional) Build Docker Image Locally
+Update each terraform.tfvars file with your AWS, VPC, and application-specific settings.
 
-```bash
+3. (Optional) Build Docker Image Locally
+
+If you want to build the Docker image locally, run the following commands:
+
 cd application
 docker build -t pokemon-flask-app .
-```
 
-### 4. Push the Image to ECR or Docker Hub
+4. Push the Image to ECR or Docker Hub
 
-Follow your container registry instructions for login and image push.
+Follow the appropriate container registry instructions to log in and push the Docker image (either to ECR or Docker Hub).
 
-### 5. Deploy Infrastructure with Terraform
+5. Deploy Infrastructure with Terraform
 
-```bash
-cd infrastructure
+The deployment is split into three stages. You need to apply the configurations in the following order:
+
+Stage 1: Bootstrap
+
+This stage sets up the Terraform backend (S3 bucket and DynamoDB table for locking). Run the following commands:
+
+cd infrastructure/bootstrap
 terraform init
 terraform apply
-```
 
-### 6. Access the Application
+Stage 2: Network
 
-The application will be accessible via the ALB DNS name output by Terraform. (ECS Auto Scaling adjusts task count based on CPU usage and ALB request count).
+The second stage provisions the base networking layer (VPC, subnets, NAT, etc.). Run the following commands:
+
+cd infrastructure/network
+terraform init
+terraform apply
+
+Stage 3: ECS-Fargate
+
+Finally, deploy the application on ECS Fargate. Run the following commands:
+
+cd infrastructure/ecs-fargate
+terraform init
+terraform apply
+
+6. Access the Application
+
+The application will be accessible via the ALB DNS name output by Terraform. ECS Auto Scaling will automatically adjust the task count based on CPU usage and ALB request count.
+
+This setup includes a CI/CD pipeline with GitHub Actions, which will trigger deployments when changes are pushed to the main branch. Additionally, the infrastructure is divided into separate modules (bootstrap, network, ecs-fargate) for better organization and isolation of state files.
 
 ---
 
