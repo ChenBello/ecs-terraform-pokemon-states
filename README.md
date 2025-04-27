@@ -74,7 +74,7 @@ Follow the appropriate container registry instructions to log in and push the Do
 
 The deployment is split into three stages. You need to apply the configurations in the following order:
 
-## Stage 1: Bootstrap
+#### Stage 1: Bootstrap
 
 This stage sets up the Terraform backend (S3 bucket and DynamoDB table for locking). Run the following commands:
 ```bash
@@ -82,7 +82,7 @@ cd infrastructure/bootstrap
 terraform init
 terraform apply
 ```
-## Stage 2: Network
+#### Stage 2: Network
 
 The second stage provisions the base networking layer (VPC, subnets, NAT, etc.). Run the following commands:
 ```bash
@@ -90,7 +90,7 @@ cd infrastructure/network
 terraform init
 terraform apply
 ```
-## Stage 3: ECS-Fargate
+#### Stage 3: ECS-Fargate
 
 Finally, deploy the application on ECS Fargate. Run the following commands:
 ```bash
