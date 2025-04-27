@@ -151,20 +151,33 @@ A GitHub Actions workflow is included for continuous deployment.
 Messages include deployer info, commit message, ECS service, and cluster.
 
 ---
-
 ## Terraform State Structure
 
 This project follows an opinionated **modular structure** with separate Terraform states for better isolation, scalability, and management. The deployment is split into three main stages:
 
-| Stage        | State File Path                         | Description                                                                 |
-|--------------|------------------------------------------|-----------------------------------------------------------------------------|
-| `bootstrap`  | `states/bootstrap/terraform.tfstate`     | Creates the Terraform backend (S3 bucket and DynamoDB table for locking).  |
-| `network`    | `states/network/terraform.tfstate`       | Provisions the base networking layer: VPC, subnets, NAT, IGW, route tables.|
-| `ecs-fargate`| `states/ecs-fargate/terraform.tfstate`   | Deploys the application on ECS Fargate with ALB, Auto Scaling, and IAM.    |
+### Stages and State Files:
+- **bootstrap**:  
+  This stage is responsible for setting up the Terraform backend (S3 bucket and DynamoDB table for locking).
+  - **State file path**: Stored locally during bootstrap (since the remote backend does not exist yet).
+  - **Description**: Creates the Terraform backend (S3 bucket and DynamoDB table for locking).
 
-Each environment loads outputs from the previous stage using `terraform_remote_state`, ensuring a loosely coupled and composable infrastructure design.
+- **network**:  
+  This stage provisions the base networking layer.
+  - **State file path**: `states/network/terraform.tfstate`
+  - **Description**: Provisions the base networking layer: VPC, subnets, NAT, IGW, and route tables.
 
-### Dependency Flow
+- **ecs-fargate**:  
+  This stage deploys the application on ECS Fargate.
+  - **State file path**: `states/ecs-fargate/terraform.tfstate`
+  - **Description**: Deploys the application on ECS Fargate with ALB, Auto Scaling, and IAM.
 
+### Key Points:
+- The **bootstrap** stage is stored locally because the remote backend does not exist yet.
+- The **network** and **ecs-fargate** stages use remote backends (S3 + DynamoDB) created during bootstrap.
+
+Each environment can load outputs from the previous stage using `terraform_remote_state`, ensuring a loosely coupled and composable infrastructure design.
+Each environment loads outputs from the previous stage using `terraform_remote_state`, ensuring a loosely coupled and composable infrastructure design. 
+
+### Dependency Flow:
 ```text
 bootstrap → network → ecs-fargate
