@@ -50,7 +50,7 @@ cd ecs-terraform-pokemon-states
 
 ### 2. Configure Terraform Variables
 
-Copy the example terraform.tfvars files for each stage (in this case, this is only needed for the 'network' stage):
+Copy the example terraform.tfvars files for each stage (in this case, this is only needed for the 'ecs-fargate' stage):
 ```bash
 cp infrastructure/bootstrap/terraform.tfvars.example infrastructure/bootstrap/terraform.tfvars
 cp infrastructure/network/terraform.tfvars.example infrastructure/network/terraform.tfvars
