@@ -171,17 +171,35 @@ A GitHub Actions workflow is included for continuous deployment.
 Messages include deployer info, commit message, ECS service, and cluster.
 
 ---
-## 📸 Screenshot of the S3 Bucket Structure
+# Terraform State Management
 
-Here’s a screenshot of the S3 bucket used in the project, showcasing the structure of the state files. The design is based on best practices for organizing state files, ensuring better management and versioning. This structure helps maintain consistency and prevents potential conflicts during deployment. 
+This project uses a remote backend to store the Terraform state file securely:
+
+- **S3 Bucket**: Stores the Terraform `.tfstate` file.
+- **DynamoDB Table**: Handles state locking and consistency to avoid concurrent operations.
+
+## Diagram
+
+[![Terraform State Architecture](./state-file.drawio.png)](./state-file.drawio.png)
+
+### 💡 Why S3 + DynamoDB?
+
+Using **S3** to store the Terraform state file allows for versioning and persistence. By adding **DynamoDB** for state locking, we ensure that concurrent Terraform operations are safely handled, preventing conflicts during deployments. This setup is designed to enhance the reliability and scalability of infrastructure provisioning.
+
+## Screenshot of the S3 Bucket Structure
+
+Below you can find a screenshot of the actual S3 bucket structure used for Terraform state files:
+
 ![S3 Bucket Structure](https://github.com/ChenBello/ecs-terraform-pokemon-states/blob/650c31d85d6f80b38c28b6af957ee32695e67fdd/IMG_2020.png)
 
 ---
+
 ## Terraform State Structure
 
 This project follows an opinionated **modular structure** with separate Terraform states for better isolation, scalability, and management. The deployment is split into three main stages:
 
 ### Stages and State Files:
+
 - **bootstrap**:  
   This stage is responsible for setting up the Terraform backend (S3 bucket and DynamoDB table for locking).
   - **State file path**: Stored locally during bootstrap (since the remote backend does not exist yet).
@@ -199,10 +217,10 @@ This project follows an opinionated **modular structure** with separate Terrafor
 
 ### Key Points:
 - The **bootstrap** stage is stored locally because the remote backend does not exist yet.
-- The **network** and **ecs-fargate** stages use remote backends (S3 + DynamoDB) created during bootstrap.
-
-Each environment can load outputs from the previous stage using `terraform_remote_state`, ensuring a loosely coupled and composable infrastructure design.
+- The **network** and **ecs-fargate** stages use remote backends (S3 + DynamoDB) created during bootstrap, ensuring better separation and isolation between stages.
+- Each environment can load outputs from the previous stage using `terraform_remote_state`, which ensures a loosely coupled and composable infrastructure design.
 
 ### Dependency Flow:
+
 ```text
 bootstrap → network → ecs-fargate
