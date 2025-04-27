@@ -46,12 +46,11 @@ resource "aws_ecs_task_definition" "task_definition" {
         awslogs-group         = "/ecs/${var.app_name}",
         awslogs-region        = "${var.region}",
         awslogs-stream-prefix = "ecs"
+        }
       }
     }
-  }
-      
-    ]
-    )
+  ])
+
     #Fargate is used as opposed to EC2, so we do not need to manage the EC2 instances. Fargate is serveless
     requires_compatibilities            = ["FARGATE"]
     network_mode                        = "awsvpc"
