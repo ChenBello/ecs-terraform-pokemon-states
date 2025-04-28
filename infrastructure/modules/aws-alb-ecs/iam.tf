@@ -25,7 +25,7 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
 }
 
 resource "aws_iam_role" "ecsTaskRole" {
-    name                  = "ecsTaskRole"
+    name                  = "ecsTaskRole" # Use name = "${var.app_name}-ecsTaskRole" for a unique name if needed. 
     assume_role_policy    = data.aws_iam_policy_document.assume_role_policy.json   
 }
 
