@@ -33,13 +33,13 @@ resource "aws_ecs_task_definition" "task_definition" {
         protocol      = "tcp"
       }
     ],
-    # healthCheck = {
-    #   command     = [ "CMD-SHELL", "curl -f http://localhost:5000/ || exit 1" ],
-    #   interval    = 30,
-    #   timeout     = 10,
-    #   startPeriod = 10,
-    #   retries     = 3
-    # },
+    healthCheck = {
+      command     = [ "CMD-SHELL", "curl -f http://localhost:5000/ || exit 1" ],
+      interval    = 30,
+      timeout     = 10,
+      startPeriod = 10,
+      retries     = 3
+    },
     logConfiguration = {
       logDriver = "awslogs",
       options = {
