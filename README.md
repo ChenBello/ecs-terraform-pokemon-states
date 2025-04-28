@@ -118,7 +118,7 @@ Here’s a diagram of the project’s architecture, showcasing the key component
 
 A GitHub Actions workflow is included for continuous deployment.
 
-**Workflow File:** `.github/workflows/DeployApp.yml`
+**Workflow File:** [`.github/workflows/DeployApp.yml`](https://github.com/ChenBello/ecs-terraform-pokemon-states/blob/main/.github/workflows/DeployApp.yml)
 
 ### What It Does
 
@@ -127,6 +127,9 @@ A GitHub Actions workflow is included for continuous deployment.
 - Triggers a new ECS deployment
 - Sends a Slack notification on success or failure
 - Supports manual deployment via workflow dispatch
+  
+Here’s a visual overview of the workflow:
+![GitHub Actions Workflow](https://github.com/ChenBello/ecs-terraform-pokemon-states/blob/914f571f6f96e86db4807eb358bf3233264f865b/GitHub_Actions_Workflow_Image.PNG?raw=true)
 
 ---
 
