@@ -112,6 +112,17 @@ Here’s a diagram of the project’s architecture, showcasing the key component
 
 ![Architecture Diagram](https://github.com/ChenBello/ecs-terraform-pokemon-states/blob/aea20ae93de8aa5a00cf5924aa8745f5bf0f67ff/_Pokemon-app-terraform_.drawio.png)
 
+## Detailed ECS & ALB Architecture
+The following diagrams illustrate how the system components interact — from internet traffic through Route 53, ALB, and into ECS Fargate tasks:
+
+### Full AWS ECS Fargate Infrastructure
+<p align="center"> <img src="https://github.com/ChenBello/ecs-terraform-pokemon-states/blob/5f64e9fb3ed95c17cd312a12457b2965f274dba5/AWS_ECS_Fargate_Architecture.png?raw=true" alt="AWS ECS Fargate Full Architecture" width="800"/> </p>
+This broader diagram captures the full infrastructure including VPC, subnets, ALB, ECS Service, Fargate Tasks, NAT Gateway, and Internet Gateway, reflecting the real AWS environment provisioned by Terraform.
+
+### ALB and ECS Flow
+<p align="center"> <img src="https://github.com/ChenBello/ecs-terraform-pokemon-states/blob/5f64e9fb3ed95c17cd312a12457b2965f274dba5/ALB_ECS_Architecture.png?raw=true" alt="ALB to ECS Architecture" width="700"/> </p>
+This diagram shows how the Application Load Balancer receives traffic from Route 53, uses a listener on port 80/443, and routes requests to a target group with IP-based Fargate tasks in private subnets.
+
 ---
 
 ## CI/CD with GitHub Actions
