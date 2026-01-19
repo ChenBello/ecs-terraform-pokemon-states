@@ -120,7 +120,7 @@ The following diagrams illustrate how the system components interact — from in
 This broader diagram captures the full infrastructure including VPC, subnets, ALB, ECS Service, Fargate Tasks, NAT Gateway, and Internet Gateway, reflecting the real AWS environment provisioned by Terraform.
 
 ### ALB and ECS Flow
-<p align="center"> <img src="https://github.com/ChenBello/ecs-terraform-pokemon-states/blob/5f64e9fb3ed95c17cd312a12457b2965f274dba5/ALB_ECS_Architecture.png?raw=true" alt="ALB to ECS Architecture" width="700"/> </p>
+<p align="center"> <img src="https://github.com/ChenBello/ecs-terraform-pokemon-states/blob/2b936190e1fb1843600fcaffb7095d7a36476f36/AWS_Fargate_Architecture.drawio.png?raw=true" alt="ALB to ECS Architecture" width="700"/> </p>
 This diagram shows how the Application Load Balancer receives traffic from Route 53, uses a listener on port 80/443, and routes requests to a target group with IP-based Fargate tasks in private subnets.
 
 ---
