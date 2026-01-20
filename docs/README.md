@@ -160,7 +160,7 @@ Here’s a visual overview of the workflow:
 | Name                  | Description                             |
 |-----------------------|-----------------------------------------|
 | ECR_BACKEND_IMAGE     | Name of the ECR repository              |
-| AWS_DEFAULT_REGION    | AWS region (e.g., us-east-1)            |
+| AWS_DEFAULT_REGION    | AWS region (e.g., eu-west-1)            |
 | ECS_CLUSTER           | Name of the ECS cluster                 |
 | ECS_BACKEND_SERVICE   | Name of the ECS service                 |
 
