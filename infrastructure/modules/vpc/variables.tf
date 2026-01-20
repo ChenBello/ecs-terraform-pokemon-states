@@ -48,3 +48,9 @@ variable "enable_dns_support" {
     description = "Whether to enable DNS support."
     default     = true
 }
+
+variable "single_nat_gateway" {
+  description = "Set true to create only one NAT Gateway to reduce cost"
+  type        = bool
+  default     = true
+}

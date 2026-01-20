@@ -14,4 +14,5 @@ module "vpc" {
     #     Terraform  = "true"
     #     Environment = "dev"
     # }
+    single_nat_gateway = var.single_nat_gateway # 1 For costs reduction
 }
