@@ -1,7 +1,7 @@
 # terraform.tfvars.example
 
 # AWS region to deploy to
-region = "us-east-1"
+region = "eu-west-1"
 
 # Application name
 app_name = "pokemon"
@@ -10,5 +10,5 @@ app_name = "pokemon"
 container_port = 5000
 
 # Full container image URI (ECR or Docker Hub)
-# Example: "123456789012.dkr.ecr.us-east-1.amazonaws.com/pokemon:latest"
+# Example: "123456789012.dkr.ecr.eu-west-1.amazonaws.com/pokemon:latest"
 container_image = "your-ecr-or-dockerhub-image-uri"

@@ -3,7 +3,7 @@ data "terraform_remote_state" "network" {
   config = {
     bucket         = "my-terraform-states-unique"
     key            = "network/terraform.tfstate"
-    region         = "us-east-1"
+    region         = "eu-west-1"
     dynamodb_table = "terraform-locks"
   }
 }
@@ -11,7 +11,7 @@ data "terraform_remote_state" "network" {
 module "aws-alb-ecs" {
   source = "../modules/aws-alb-ecs"
   vpc_id              = data.terraform_remote_state.network.outputs.vpc_id
-  region              = var.region # "us-east-1"
+  region              = var.region # "eu-west-1"
   app_name            = var.app_name # "pokemon"
   container_port      = var.container_port # 5000
   container_image = var.container_image # "chenbello3/pokemon-flask-app:latest"
