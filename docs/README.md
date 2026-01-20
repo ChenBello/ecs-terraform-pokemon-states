@@ -194,7 +194,7 @@ This project uses a remote backend to store the Terraform state file securely:
 
 ## Diagram
 
-[![Terraform State Architecture](./state-file.drawio.png)](./state-file.drawio.png)
+[![Terraform State Architecture](./images/state-file.drawio.png)](./images/state-file.drawio.png)
 
 ### 💡 Why S3 + DynamoDB?
 
