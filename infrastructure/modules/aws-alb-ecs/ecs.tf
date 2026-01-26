@@ -21,7 +21,7 @@ resource "aws_ecs_task_definition" "task_definition" {
     [
       {
     name        = "${var.app_name}-container",
-    image       = "${var.container_image}",
+    image       = var.container_image,
     essential   = true,
     entryPoint  = [],
     networkMode = "awsvpc", # maybe should be removed
@@ -44,7 +44,7 @@ resource "aws_ecs_task_definition" "task_definition" {
       logDriver = "awslogs",
       options = {
         awslogs-group         = "/ecs/${var.app_name}",
-        awslogs-region        = "${var.region}",
+        awslogs-region        = var.region,
         awslogs-stream-prefix = "ecs"
         }
       }
